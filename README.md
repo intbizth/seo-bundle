@@ -214,6 +214,7 @@ final class SyliusImageProvider implements ImageProviderInterface
         return // implement get your image
     }
 }
+```
 
 ```xml
 # services.xml
@@ -228,5 +229,31 @@ final class SyliusImageProvider implements ImageProviderInterface
 toro_seo:
     renderer:
         image_provider: "app.provider.liip_image"
+
+```
+
+# Configulation Ref.
+
+```yaml
+toro_seo:
+    renderer: 
+        service: 'toro_seo.twig_extension.render_meta_extension' # custom renderer
+        image_provider: 'some.image.provider.service' # required if use renderer "toro_seo.twig_extension.render_meta_extension"
+    sitemap_locale:
+        service: 'toro_seo.locale_provider.configuration' # custom locale provider
+        default_locale: "%locale%" # required if use provider "toro_seo.locale_provider.configuration"
+        all_locales: ['th', 'en'] # required if use provider "toro_seo.locale_provider.configuration"
+    ignore_request_attrs: ['template', '_locale', '_sylius'] # Ignore route params matching in renderer   
+    sitemap_routing:
+        - 
+            route: route_name
+            parameters: []
+            priority: 1.0
+            changefreq: daily
+        - 
+            route: route_name_2
+            parameters: { param1: 'test' }
+            priority: 0.5
+            changefreq: daily
 
 ```
