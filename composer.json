@@ -45,8 +45,5 @@
     "branch-alias": {
       "dev-master": "1.0-dev"
     }
-  },
-  "suggest": {
-    "cache/filesystem-adapter": "To use built-in \\PhpMob\\Settings\\Manager\\CachedManager."
   }
 }

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Toro\SeoBundle\Sitemap;
 
-use Sylius\Component\Locale\Provider\LocaleProviderInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Toro\SeoBundle\Provider\LocaleProviderInterface;
 
 final class StaticRouteSitemapListener extends AbstractSitemapListener
 {
