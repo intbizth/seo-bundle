@@ -1,0 +1,13 @@
+/.php_cs.cache
+
+/bin/*
+!/bin/console
+!/bin/symfony_requirements
+
+/vendor
+/node_modules
+
+/behat.yml
+/phpunit.xml
+/phpspec.yml
+/.web-server-pid

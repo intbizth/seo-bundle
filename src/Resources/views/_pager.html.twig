@@ -1,0 +1,28 @@
+{% set page = app.request.query.get('page', 1) %}
+
+{% if pager|default %}
+    {% set pager = {
+    page: page,
+    pages: pager.nbPages|number_format,
+    total: pager.count|number_format,
+    start: pager.currentPageOffsetStart|number_format,
+    end: pager.currentPageOffsetEnd|number_format,
+    prev: (pager.hasPreviousPage) ? pager.previousPage : null,
+    next: (pager.hasNextPage) ? pager.nextPage : null,
+    } %}
+    {% if page > 1 %}
+        {% set title = "%s - หน้าที่ %s จากทั้งหมด %s หน้า"|format(title, pager.page, pager.pages) %}
+        {% set description = "%s - รายการที่ %s - %s จากทั้งหมด %s รายการ"|format(description, pager.start, pager.end, pager.total) %}
+    {% endif %}
+
+    {% if pager.prev|default %}
+        {% set prev_url = path(app.request.attributes.get('_route'),
+        app.request.attributes.get('_route_params')|merge(app.request.query)|merge({page : pager.prev})) %}
+        <link rel="prev" href="{{ prev_url }}" />
+    {% endif %}
+    {% if pager.next|default %}
+        {% set next_url = path(app.request.attributes.get('_route'),
+        app.request.attributes.get('_route_params')|merge(app.request.query)|merge({page : pager.next})) %}
+        <link rel="next" href="{{ next_url }}" />
+    {% endif %}
+{% endif %}

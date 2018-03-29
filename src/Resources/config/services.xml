@@ -1,0 +1,38 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <imports>
+        <import resource="service/forms.xml"/>
+        <import resource="service/twigs.xml"/>
+    </imports>
+    <services>
+        <service id="toro_seo.provider.meta_main_path_info" class="Toro\SeoBundle\Provider\MetaSeoMainPathInfoProvider">
+            <argument type="service" id="toro.repository.meta_seo" />
+            <argument>%toro_seo.ignore_request_attrs%</argument>
+        </service>
+
+        <service id="toro_seo.renderer.twig" class="Toro\SeoBundle\Renderer\TwigRenderer">
+            <argument type="service" id="toro_seo.provider.meta_main_path_info" />
+            <argument type="service" id="twig" />
+            <!-- <argument />  Inject by extension -->
+        </service>
+
+        <service abstract="true" id="toro_seo.listener.abstract_sitemap_listener" class="Toro\SeoBundle\Sitemap\AbstractSitemapListener">
+            <argument type="service" id="router.default" />
+            <argument type="service" id="bonn_seo.locale_provider" />
+        </service>
+
+        <service parent="toro_seo.listener.abstract_sitemap_listener" id="toro_seo.listener.static_sitemap_listener" class="Toro\SeoBundle\Sitemap\StaticRouteSitemapListener">
+            <argument>%toro_seo.sitemap_routing%</argument>
+            <tag name="kernel.event_subscriber" />
+        </service>
+
+        <service id="toro_seo.locale_provider.configuration" class="Toro\SeoBundle\Provider\ConfigurationLocaleProvider">
+            <!-- <argument />  Inject by extension -->
+            <!-- <argument />  Inject by extension -->
+        </service>
+    </services>
+</container>

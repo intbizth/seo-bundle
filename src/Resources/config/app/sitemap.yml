@@ -1,0 +1,6 @@
+presta_sitemap:
+    route_annotation_listener: false
+    defaults:
+        priority: 0.5
+        changefreq: weekly
+        lastmod: now

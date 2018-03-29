@@ -1,0 +1,52 @@
+{
+  "name": "intbizth/seo-bundle",
+  "description": "Just a Symfony seo bundle.",
+  "type": "symfony-bundle",
+  "keywords": [
+    "php",
+    "seo",
+    "seo-bundle"
+  ],
+  "homepage": "https://github.com/intbizth/seo-bundle",
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Bonn",
+      "email": "im_bonbonn@hotmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Toro\\SeoBundle\\": "src"
+    },
+    "classmap": []
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "tests\\Toro\\SeoBundle\\": "tests"
+    }
+  },
+  "require": {
+    "php": "^7.2",
+    "presta/sitemap-bundle": "^1.5",
+    "symfony/framework-bundle": "^3.4",
+    "sylius/resource-bundle": "^1.1",
+    "twig/twig": "^2.0"
+  },
+  "require-dev": {
+    "phpspec/phpspec": "^4.0"
+  },
+  "config": {
+    "sort-packages": true,
+    "bin-dir": "bin"
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.0-dev"
+    }
+  },
+  "suggest": {
+    "cache/filesystem-adapter": "To use built-in \\PhpMob\\Settings\\Manager\\CachedManager."
+  }
+}

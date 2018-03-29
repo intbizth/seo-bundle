@@ -1,0 +1,3 @@
+imports:
+     - { resource: "@ToroSeoBundle/Resources/config/app/sylius_resource.yml" }
+     - { resource: "@ToroSeoBundle/Resources/config/app/sitemap.yml" }
