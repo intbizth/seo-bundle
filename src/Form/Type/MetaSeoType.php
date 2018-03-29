@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Toro\SeoBundle\Form\Type;
 
-use Toro\Bundle\CoreBundle\Form\Type\YamlType;
 use Sylius\Bundle\ResourceBundle\Form\Type\AbstractResourceType;
 use Sylius\Bundle\ResourceBundle\Form\Type\ResourceTranslationsType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
