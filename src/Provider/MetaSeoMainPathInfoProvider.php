@@ -82,6 +82,10 @@ final class MetaSeoMainPathInfoProvider implements MetaSeoProviderInterface
             'routeName' => $routeName
         ]);
 
+        if (1 === count($metas) && empty($metas[0]->getParameters())) {
+            return $metas[0];
+        }
+
         $countMatch = 0;
         /** @var MetaSeoInterface $metaSeo */
         foreach ($metas as $metaSeo) {
