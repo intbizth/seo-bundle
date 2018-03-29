@@ -60,7 +60,6 @@ toro_seo:
 <?php
 // AppBundle\PageSitemapListener.php
 
-use Bonn\Bundle\SeoBundle\Sitemap\AbstractSitemapListener;
 use Presta\SitemapBundle\Sitemap\Url\GoogleMultilangUrlDecorator;
 use Toro\SeoBundle\Provider\LocaleProviderInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -100,7 +99,7 @@ class PageSitemapListener extends \Toro\SeoBundle\Sitemap\AbstractSitemapListene
         /** @var PageInterface $page */
         foreach ($pages as $page) {
             $this->addUrl($this->createUrl([
-                'route' => 'bonn_cms_page_by_slug',
+                'route' => 'toro_cms_page_by_slug',
                 'parameters' => [
                     'slug' => $page->getSlug()
                 ],
