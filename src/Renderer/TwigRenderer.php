@@ -43,16 +43,16 @@ final class TwigRenderer implements RendererInterface
         $this->optionResolver
             ->setDefaults([
                 'template' => self::DEFAULT_TEMPLATE,
+                'default_description' => null,
+                'default_keywords' => null,
                 'default_footer' => null,
                 'default_image_url' => null,
                 'options' => []
             ])
             ->setRequired('default_title')
-            ->setRequired('default_description')
-            ->setRequired('default_keywords')
             ->setAllowedTypes('default_title', ['string'])
-            ->setAllowedTypes('default_description', ['string'])
-            ->setAllowedTypes('default_keywords', ['string'])
+            ->setAllowedTypes('default_description', ['string', 'null'])
+            ->setAllowedTypes('default_keywords', ['string', 'null'])
             ->setAllowedTypes('default_footer', ['string', 'null'])
             ->setAllowedTypes('default_image_url', ['string', 'null'])
             ->setAllowedTypes('options', ['array'])
