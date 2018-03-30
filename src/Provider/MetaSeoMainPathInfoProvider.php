@@ -71,7 +71,7 @@ final class MetaSeoMainPathInfoProvider implements MetaSeoProviderInterface
         $meta = null;
         $routeName = $request->attributes->get('_route');
         $parameters = array_filter(
-            $request->attributes->get('_route_params'),
+            (array) $request->attributes->get('_route_params'),
             function ($key) {
                 return !in_array($key, $this->ignoreAttrs);
             },
