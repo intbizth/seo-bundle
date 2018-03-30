@@ -22,10 +22,10 @@
 
         <service abstract="true" id="toro_seo.listener.abstract_sitemap_listener" class="Toro\SeoBundle\Sitemap\AbstractSitemapListener">
             <argument type="service" id="router.default" />
-            <argument type="service" id="bonn_seo.locale_provider" />
         </service>
 
         <service parent="toro_seo.listener.abstract_sitemap_listener" id="toro_seo.listener.static_sitemap_listener" class="Toro\SeoBundle\Sitemap\StaticRouteSitemapListener">
+            <argument type="service" id="bonn_seo.locale_provider" />
             <argument>%toro_seo.sitemap_routing%</argument>
             <tag name="kernel.event_subscriber" />
         </service>

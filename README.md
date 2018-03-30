@@ -71,43 +71,62 @@ use Presta\SitemapBundle\Sitemap\Url\UrlConcrete;
 
 class PageSitemapListener extends \Toro\SeoBundle\Sitemap\AbstractSitemapListener
 {
+    const SECTION = 'cms_page';
+    
     /**
      * @var PageRepositoryInterface
      */
     private $repository;
 
-    public function __construct(UrlGeneratorInterface $urlGenerator, LocaleProviderInterface $localeProvider, PageRepositoryInterface $repository)
+    public function __construct(UrlGeneratorInterface $urlGenerator, PageRepositoryInterface $repository)
     {
-        parent::__construct($urlGenerator, $localeProvider);
+        parent::__construct($urlGenerator);
         $this->repository = $repository;
     }
 
     /**
      * @inheritdoc
      */
-    public function getName(): string
-    {
-        return 'page'; // name of group
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function process()
+    public function registerUrls(UrlContainerInterface $urls): void
     {
         $pages = $this->repository->findBy(['enabled' => true]);
-
         /** @var PageInterface $page */
         foreach ($pages as $page) {
-            $this->addUrl($this->createUrl([
-                'route' => 'bonn_cms_page_by_slug',
-                'parameters' => [
-                    'slug' => $page->getSlug()
-                ],
-                'changefreq' => 'weekly',
-                'priority' => 1.0,
-                'multi_lang' => true // set to false for no alt lang
-            ]));
+            $translations = $page->getTranslations();
+            $isMultiLang = 2 <= count($translations);
+            $url = new UrlConcrete(
+                $this->urlGenerator->generate(
+                    'page_by_slug',
+                    [
+                        'slug' => $page->getSlug(),
+                        '_locale' => $page->getTranslation()->getLocale()
+                    ],
+                    UrlGeneratorInterface::ABSOLUTE_URL
+                ),
+                $page->getUpdatedAt() ?: $page->getCreatedAt(),
+                'weekly',
+                0.8
+            );
+
+            if (!$isMultiLang) {
+                $urls->addUrl($url, self::SECTION);
+                continue;
+            }
+
+            $url = new GoogleMultilangUrlDecorator($url);
+            /** @var PageTranslationInterface $translation */
+            foreach ($translations as $translation) {
+                $url->addLink($this->urlGenerator->generate(
+                    'page_by_slug',
+                    [
+                        'slug' => $translation->getSlug(),
+                        '_locale' => $translation->getLocale()
+                    ],
+                    UrlGeneratorInterface::ABSOLUTE_URL
+                ), $translation->getLocale());
+            }
+
+            $urls->addUrl($url, self::SECTION);
         }
     }
 }
