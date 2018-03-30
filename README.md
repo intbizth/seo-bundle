@@ -60,7 +60,6 @@ toro_seo:
 <?php
 // AppBundle\PageSitemapListener.php
 
-use Bonn\Bundle\SeoBundle\Sitemap\AbstractSitemapListener;
 use Presta\SitemapBundle\Sitemap\Url\GoogleMultilangUrlDecorator;
 use Toro\SeoBundle\Provider\LocaleProviderInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
