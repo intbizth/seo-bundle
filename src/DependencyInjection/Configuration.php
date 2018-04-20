@@ -26,7 +26,7 @@ class Configuration implements ConfigurationInterface
                     ->children()
                         ->scalarNode('service')->defaultValue('toro_seo.twig_extension.render_meta_extension')->end()
                         ->scalarNode('image_provider')->defaultNull()->end()
-                        ->scalarNode('cache')->defaultValue('seo_meta_data.cache')->end()
+                        ->scalarNode('cache')->defaultNull()->end()
                     ->end()
                 ->end()
                 ->arrayNode('ignore_request_attrs')

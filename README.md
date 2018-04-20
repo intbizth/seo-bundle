@@ -257,6 +257,7 @@ toro_seo:
     renderer: 
         service: 'toro_seo.twig_extension.render_meta_extension' # custom renderer
         image_provider: 'some.image.provider.service' # required if use renderer "toro_seo.twig_extension.render_meta_extension"
+        cache: 'some.cache.service' # implement `Psr\Cache\CacheItemPoolInterface`
     sitemap_locale:
         service: 'toro_seo.locale_provider.configuration' # custom locale provider
         default_locale: "%locale%" # required if use provider "toro_seo.locale_provider.configuration"
