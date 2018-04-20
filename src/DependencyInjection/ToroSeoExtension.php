@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Toro\SeoBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
+use Toro\SeoBundle\Event\ClearMetaSeoCache;
 use Toro\SeoBundle\Sitemap\StaticRouteSitemapListener;
 use Sylius\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractResourceExtension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -33,6 +34,7 @@ class ToroSeoExtension extends AbstractResourceExtension
         $loader->load('services.xml');
 
         $this->registerMetaSeoRenderer($config, $container);
+        $this->registerMetaSeoCache($config, $container);
         $this->registerSitemapLocaleProvider($config, $container);
     }
 
@@ -51,10 +53,35 @@ class ToroSeoExtension extends AbstractResourceExtension
         $container->setDefinition('toro_seo.renderer.twig', $twigRenderer);
     }
 
+    private function registerMetaSeoCache(array $config, ContainerBuilder $container)
+    {
+        if ('toro_seo.twig_extension.render_meta_extension' !== $config['renderer']['service']) {
+            return;
+        }
+
+        if (empty($config['renderer']['cache'])) {
+            return;
+        }
+
+        $twigRenderer = $container->getDefinition('bonn_seo.renderer.twig');
+        $twigRenderer->setArgument(3, new Reference($config['renderer']['cache']));
+        $container->setDefinition('bonn_seo.renderer.twig', $twigRenderer);
+
+        $clearCacheDefinition = new Definition(ClearMetaSeoCache::class, [
+            new Reference($config['renderer']['cache'])
+        ]);
+
+        $clearCacheDefinition->addTag('doctrine.event_subscriber', [
+            'connection' => 'default'
+        ]);
+
+        $container->setDefinition('toro_seo.event.meta_seo_cache_clear_subscriber', $clearCacheDefinition);
+    }
+
     private function registerSitemapLocaleProvider(array $config, ContainerBuilder $container)
     {
         if ('toro_seo.locale_provider.configuration' !== $config['sitemap_locale']['service']) {
-            $container->setAlias('bonn_seo.locale_provider', $config['sitemap_locale']['service']);
+            $container->setAlias('toro_seo.locale_provider', $config['sitemap_locale']['service']);
             return;
         }
 
@@ -66,6 +93,6 @@ class ToroSeoExtension extends AbstractResourceExtension
         $localeProvider->setArgument(0, $config['sitemap_locale']['default_locale']);
         $localeProvider->setArgument(1, $config['sitemap_locale']['all_locales']);
         $container->setDefinition('toro_seo.locale_provider.configuration', $localeProvider);
-        $container->setAlias('bonn_seo.locale_provider', 'toro_seo.locale_provider.configuration');
+        $container->setAlias('toro_seo.locale_provider', 'toro_seo.locale_provider.configuration');
     }
 }

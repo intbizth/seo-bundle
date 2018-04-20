@@ -114,8 +114,8 @@ final class MetaSeoMainPathInfoProvider implements MetaSeoProviderInterface
      * @param Request $request
      * @return string
      */
-    private function getCacheKey(Request $request)
+    public function getCacheKey(Request $request)
     {
-        return md5($request->getPathInfo() . $request->attributes->get('_route') . json_encode($request->attributes->get('_route_params')));
+        return md5($request->getPathInfo() . $request->attributes->get('_route') . json_encode($request->attributes->get('_route_params')) . $request->getLocale());
     }
 }

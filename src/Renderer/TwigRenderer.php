@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Toro\SeoBundle\Renderer;
 
+use Psr\Cache\CacheItemPoolInterface;
 use Toro\SeoBundle\Model\MetaSeoInterface;
 use Toro\SeoBundle\Provider\ImageProviderInterface;
 use Toro\SeoBundle\Provider\MetaSeoProviderInterface;
@@ -30,14 +31,20 @@ final class TwigRenderer implements RendererInterface
     private $provider;
 
     /**
+     * @var CacheItemPoolInterface
+     */
+    private $cacheItemPool;
+
+    /**
      * @var OptionsResolver
      */
     private $optionResolver = [];
 
-    public function __construct(MetaSeoProviderInterface $provider, \Twig_Environment $twig, ImageProviderInterface $imageProvider = null)
+    public function __construct(MetaSeoProviderInterface $provider, \Twig_Environment $twig, ImageProviderInterface $imageProvider = null, CacheItemPoolInterface $cacheItemPool = null)
     {
         $this->provider = $provider;
         $this->imageProvider = $imageProvider ?: null;
+        $this->cacheItemPool = $cacheItemPool ?: null;
         $this->twig = $twig;
         $this->optionResolver = new OptionsResolver();
         $this->optionResolver
@@ -64,9 +71,20 @@ final class TwigRenderer implements RendererInterface
      */
     public function render(Request $request, array $options): string
     {
-        $meta = $this->provider->getMetaFromRequest($request);
-
         $options = $this->optionResolver->resolve($options);
+
+        // get from cache
+        if (null !== $this->cacheItemPool) {
+            $cacheKey = $this->provider->getCacheKey($request);
+            if ($this->cacheItemPool->hasItem($cacheKey)) {
+                return $this->twig->render($options['template'], [
+                    'bonn_seo' => $this->cacheItemPool->getItem($cacheKey)->get(),
+                    'options' => $options['options']
+                ]);
+            }
+        }
+
+        $meta = $this->provider->getMetaFromRequest($request);
 
         $context = [
             'title' => $options['default_title'],
@@ -84,6 +102,14 @@ final class TwigRenderer implements RendererInterface
                 'footer' => $meta->getFooter() ?: $options['default_footer'],
                 'image_url' => $this->imageProvider ? $this->imageProvider->getImagePath($meta) ?: $options['default_image_url'] : '',
             ];
+        }
+
+        // set from cache
+        if (null !== $this->cacheItemPool) {
+            $cacheKey = $this->provider->getCacheKey($request);
+            $cacheItem = $this->cacheItemPool->getItem($cacheKey);
+            $cacheItem->set($context);
+            $this->cacheItemPool->save($cacheItem);
         }
 
         return $this->twig->render($options['template'], [

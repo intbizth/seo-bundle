@@ -14,4 +14,10 @@ interface MetaSeoProviderInterface
      * @return MetaSeoInterface|null
      */
     public function getMetaFromRequest(Request $request): ?MetaSeoInterface;
+
+    /**
+     * @param Request $request
+     * @return null|string
+     */
+    public function getCacheKey(Request $request): ?string;
 }
