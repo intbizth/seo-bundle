@@ -63,9 +63,9 @@ class ToroSeoExtension extends AbstractResourceExtension
             return;
         }
 
-        $twigRenderer = $container->getDefinition('bonn_seo.renderer.twig');
+        $twigRenderer = $container->getDefinition('toro_seo.renderer.twig');
         $twigRenderer->setArgument(3, new Reference($config['renderer']['cache']));
-        $container->setDefinition('bonn_seo.renderer.twig', $twigRenderer);
+        $container->setDefinition('toro_seo.renderer.twig', $twigRenderer);
 
         $clearCacheDefinition = new Definition(ClearMetaSeoCache::class, [
             new Reference($config['renderer']['cache'])
