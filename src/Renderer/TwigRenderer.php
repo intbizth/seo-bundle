@@ -78,7 +78,7 @@ final class TwigRenderer implements RendererInterface
             $cacheKey = $this->provider->getCacheKey($request);
             if ($this->cacheItemPool->hasItem($cacheKey)) {
                 return $this->twig->render($options['template'], [
-                    'bonn_seo' => $this->cacheItemPool->getItem($cacheKey)->get(),
+                    'toro_seo' => $this->cacheItemPool->getItem($cacheKey)->get(),
                     'options' => $options['options']
                 ]);
             }
