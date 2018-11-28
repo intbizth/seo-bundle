@@ -30,7 +30,7 @@
   "require": {
     "php": "^7.2",
     "presta/sitemap-bundle": "^1.5",
-    "symfony/framework-bundle": "^3.4",
+    "symfony/framework-bundle": "^3.4|^4.1",
     "sylius/resource-bundle": "^1.1",
     "twig/twig": "^2.0"
   },
