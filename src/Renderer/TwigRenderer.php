@@ -51,7 +51,6 @@ final class TwigRenderer implements RendererInterface
             ->setDefaults([
                 'template' => self::DEFAULT_TEMPLATE,
                 'default_description' => null,
-                'default_keywords' => null,
                 'default_footer' => null,
                 'default_image_url' => null,
                 'options' => []
@@ -59,7 +58,6 @@ final class TwigRenderer implements RendererInterface
             ->setRequired('default_title')
             ->setAllowedTypes('default_title', ['string'])
             ->setAllowedTypes('default_description', ['string', 'null'])
-            ->setAllowedTypes('default_keywords', ['string', 'null'])
             ->setAllowedTypes('default_footer', ['string', 'null'])
             ->setAllowedTypes('default_image_url', ['string', 'null'])
             ->setAllowedTypes('options', ['array'])
@@ -89,7 +87,6 @@ final class TwigRenderer implements RendererInterface
         $context = [
             'title' => $options['default_title'],
             'description' => $options['default_description'],
-            'keywords' => $options['default_keywords'],
             'footer' => $options['default_footer'],
             'image_url' => $options['default_image_url'],
         ];
@@ -98,7 +95,6 @@ final class TwigRenderer implements RendererInterface
             $context = [
                 'title' => $meta->getTitle() ?: $options['default_title'],
                 'description' => $meta->getDescription() ?: $options['default_description'],
-                'keywords' => $meta->getKeywords() ?: $options['default_keywords'],
                 'footer' => $meta->getFooter() ?: $options['default_footer'],
                 'image_url' => $this->imageProvider ? $this->imageProvider->getImagePath($meta) ?: $options['default_image_url'] : '',
             ];
