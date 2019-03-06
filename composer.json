@@ -28,7 +28,7 @@
     }
   },
   "require": {
-    "php": "^7.2",
+    "php": "^7.1",
     "presta/sitemap-bundle": "^1.5",
     "symfony/framework-bundle": "^3.4|^4.1",
     "sylius/resource-bundle": "^1.1",
